@@ -4,13 +4,12 @@ const deliveryProject = require("./delivery");
 const { store, get } = require("./suggestions");
 
 async function main() {
-  const { projectSlug, studentId } = await inquirer.prompt([
+  const { projectId, studentId } = await inquirer.prompt([
     {
       type: "input",
-      message: "Qual o nome do projeto que deseja corrigir?",
-      name: "projectSlug",
-      validate: schemaValidation(schemas.slugSchema),
-      default: get("projectSlug"),
+      message: "Qual o id do projeto que deseja corrigir?",
+      name: "projectId",
+      validate: schemaValidation(schemas.numericIdSchema),
     },
     {
       type: "number",
@@ -22,13 +21,11 @@ async function main() {
 
   const deliveries = await readDeliveries();
 
-  store("projectSlug", projectSlug);
-
   try {
     console.log("Enviando projeto...");
-    await deliveryProject(projectSlug, studentId, deliveries);
+    await deliveryProject(projectId, studentId, deliveries);
     console.log("Projeto enviado com sucesso!");
-    console.log(`Projeto: ${projectSlug}`);
+    console.log(`ID do projeto: ${projectId}`);
     console.log(`ID do estudante: ${studentId}`);
     console.log("Entregas:");
     deliveries.forEach((delivery) => {

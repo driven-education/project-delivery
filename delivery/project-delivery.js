@@ -2,13 +2,13 @@ const axios = require("axios");
 const dotenv = require("dotenv");
 dotenv.config();
 
-function deliveryProject(projectSlug, studentId, deliveries) {
-  const baseUrl = "https://hub-bootcamp-pleev5musq-uc.a.run.app";
+function deliveryProject(projectId, studentId, deliveries) {
+  const baseUrl = "https://bootcamp.hub.driven.com.br";
   const path = "/project-deliveries/cli-delivery";
   const apiKey = process.env.API_KEY;
 
   const data = {
-    projectSlug,
+    projectId,
     studentId,
     deliveries,
   };
