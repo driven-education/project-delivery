@@ -1,7 +1,6 @@
 const inquirer = require("inquirer");
 const { schemaValidation, schemas } = require("./validation");
 const deliveryProject = require("./delivery");
-const { store, get } = require("./suggestions");
 
 async function main() {
   const { projectId, studentId } = await inquirer.prompt([
@@ -58,7 +57,7 @@ async function readDeliveries() {
     const { hasDeliverable } = await inquirer.prompt([
       {
         type: "confirm",
-        message: `O projeto tem um link de ${deliverableType}?`,
+        message: `O projeto tem um repositório de ${deliverableType}?`,
         name: "hasDeliverable",
       },
     ]);
@@ -73,14 +72,16 @@ async function readDeliveries() {
 }
 
 async function readDeliverableInfo(deliverableType) {
-  const validator = ["front-end", "back-end"].includes(deliverableType)
+	const isRepo = ["front-end", "back-end"].includes(deliverableType)
+
+  const validator = isRepo
     ? schemaValidation(schemas.githubUrlSchema)
     : schemaValidation(schemas.urlSchema);
 
   const { url } = await inquirer.prompt([
     {
       type: "input",
-      message: `Qual a url do ${deliverableType} do projeto?`,
+      message: isRepo ? `Qual a url do repositório de ${deliverableType}?` : `Qual a url do ${deliverableType} (link front)?`,
       name: "url",
       validate: validator,
     },
